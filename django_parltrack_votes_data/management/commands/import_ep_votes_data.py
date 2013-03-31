@@ -24,6 +24,7 @@ import pytz
 from os.path import join
 from json import loads, dumps
 from dateutil.parser import parse
+import urllib
 
 from django.db import transaction, connection, reset_queries
 from django.utils.timezone import make_aware
@@ -37,9 +38,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print "Clean old downloaded files"
-        os.system("rm %s %s" % (join("/tmp", "ep_votes.json"), join("/tmp", "ep_votes.json.xz")))
+        json_file = join("/tmp", "ep_votes.json")
+        xz_file = join("/tmp", "ep_votes.json.xz")
+        if os.path.exists(json_file):
+            os.remove(json_file)
+        if os.path.exists(xz_file):
+            os.remove(xz_file)
         print "Download vote data from parltrack"
-        os.system("wget -O %s http://parltrack.euwiki.org/dumps/ep_votes.json.xz" % join("/tmp", "ep_votes.json.xz"))
+        urllib.urlretrieve('http://parltrack.euwiki.org/dumps/ep_votes.json.xz', xz_file)
         print "unxz it"
         os.system("unxz %s" % join("/tmp", "ep_votes.json.xz"))
         print "cleaning old votes data..."
