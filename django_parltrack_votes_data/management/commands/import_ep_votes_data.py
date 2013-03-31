@@ -37,6 +37,8 @@ class Command(BaseCommand):
     help = 'Import vote data of the European Parliament, this is needed to be able to create voting recommendations'
 
     def handle(self, *args, **options):
+        if os.system("which unxz > /dev/null") != 0:
+            raise Exception("XZ binary missing, please install xz")
         print "Clean old downloaded files"
         json_file = join("/tmp", "ep_votes.json")
         xz_file = join("/tmp", "ep_votes.json.xz")
