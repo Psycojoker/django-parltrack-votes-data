@@ -49,7 +49,7 @@ class Command(BaseCommand):
         print "Download vote data from parltrack"
         urllib.urlretrieve('http://parltrack.euwiki.org/dumps/ep_votes.json.xz', xz_file)
         print "unxz it"
-        os.system("unxz %s" % join("/tmp", "ep_votes.json.xz"))
+        os.system("unxz %s" % xz_file)
         print "cleaning old votes data..."
         connection.cursor().execute("DELETE FROM django_parltrack_votes_data_votesdata")
         transaction.commit_unless_managed()
@@ -59,7 +59,7 @@ class Command(BaseCommand):
         a = 1
         with transaction.commit_on_success():
         # I need to parse the json file by hand, otherwise this eat way to much memory
-            for i in open(join("/tmp", "ep_votes.json"), "r"):
+            for i in open(json_file, "r"):
                 if i in ("[{\n", "{\n"):
                     # print "begin doc"
                     current_json += "{\n"
