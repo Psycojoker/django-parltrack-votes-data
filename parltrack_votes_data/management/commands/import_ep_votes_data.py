@@ -51,7 +51,7 @@ class Command(BaseCommand):
         print "unxz it"
         os.system("unxz %s" % xz_file)
         print "cleaning old votes data..."
-        connection.cursor().execute("DELETE FROM django_parltrack_votes_data_votesdata")
+        connection.cursor().execute("DELETE FROM %s" % VotesData._meta.db_table)
         transaction.commit_unless_managed()
         print VotesData.objects.count()
         print "read file"
