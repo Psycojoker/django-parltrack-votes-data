@@ -30,7 +30,7 @@ from django.db import transaction, connection, reset_queries
 from django.utils.timezone import make_aware
 from django.core.management.base import BaseCommand
 
-from django_parltrack_votes_data.models import VotesData
+from parltrack_votes_data.models import VotesData
 
 
 class Command(BaseCommand):
